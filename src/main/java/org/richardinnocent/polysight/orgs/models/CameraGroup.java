@@ -2,6 +2,8 @@ package org.richardinnocent.polysight.orgs.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,17 +22,18 @@ public class CameraGroup {
 
   @Id
   @Column(name = Meta.ID_COLUMN_NAME, nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
   @ManyToOne
-  @JoinColumn(name = Organisation.Meta.ID_COLUMN_NAME, nullable = false)
+  @JoinColumn(name = "id", nullable = false)
   private Organisation organisation;
 
   @Column(name = Meta.NAME_COLUMN_NAME, nullable = false)
   private String name;
 
-  @Column(name = Meta.DATE_CREATED_COLUMN_NAME, nullable = false)
-  private DateTime dateCreated;
+  @Column(name = Meta.CREATION_TIME_COLUMN_NAME, nullable = false)
+  private DateTime creationTime;
 
   /**
    * Gets the ID of the camera group.
@@ -84,23 +87,23 @@ public class CameraGroup {
    * Gets the date and time at which this camera group was created.
    * @return The date and time that this camera group was created.
    */
-  public DateTime getDateCreated() {
-    return dateCreated;
+  public DateTime getCreationTime() {
+    return creationTime;
   }
 
   /**
    * Sets the date and time at which this camera group was created.
-   * @param dateCreated The date and time at which this camera group was created.
+   * @param creationTime The date and time at which this camera group was created.
    */
-  public void setDateCreated(DateTime dateCreated) {
-    this.dateCreated = dateCreated;
+  public void setCreationTime(DateTime creationTime) {
+    this.creationTime = creationTime;
   }
 
   public static class Meta {
     public static final String TABLE_NAME = "camera_group";
     public static final String ID_COLUMN_NAME = "camera_group_id";
     public static final String NAME_COLUMN_NAME = "name";
-    public static final String DATE_CREATED_COLUMN_NAME = "date_created";
+    public static final String CREATION_TIME_COLUMN_NAME = "creation_time";
 
     private Meta() {}
   }
