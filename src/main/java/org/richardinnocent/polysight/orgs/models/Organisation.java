@@ -2,6 +2,8 @@ package org.richardinnocent.polysight.orgs.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,6 +44,7 @@ public class Organisation {
   private DateTime dateCreated;
 
   @Column(name = Meta.STATUS_COLUMN_NAME, nullable = false)
+  @Enumerated(EnumType.STRING)
   private OrganisationStatus status;
 
   /**

@@ -1,14 +1,14 @@
 package org.richardinnocent.polysight.orgs.models;
 
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import org.richardinnocent.polysight.orgs.models.UserOrganisationAssignment.Meta;
 
 /**
@@ -16,7 +16,12 @@ import org.richardinnocent.polysight.orgs.models.UserOrganisationAssignment.Meta
  */
 @Entity
 @Table(
-    name = Meta.TABLE_NAME
+    name = Meta.TABLE_NAME,
+    uniqueConstraints = {
+        @UniqueConstraint(
+            name = "user_organisation",
+            columnNames = {Meta.USER_ID_COLUMN_NAME, Meta.ORGANISATION_ID_COLUMN_NAME})
+    }
 )
 public class UserOrganisationAssignment {
 
@@ -28,9 +33,9 @@ public class UserOrganisationAssignment {
   @Column(name = Meta.USER_ID_COLUMN_NAME, nullable = false)
   private long userId;
 
-  @OneToMany
-  @JoinColumn(name = "id")
-  private Set<Organisation> organisations;
+  @ManyToOne
+  @JoinColumn(name = Meta.ORGANISATION_ID_COLUMN_NAME, nullable = false)
+  private Organisation organisation;
 
   /**
    * Gets the ID of the assignment.
@@ -65,25 +70,26 @@ public class UserOrganisationAssignment {
   }
 
   /**
-   * Gets the organisations that the user has access to.
+   * Gets the organisation that the user has access to.
    * @return The organisation that the user has access to.
    */
-  public Set<Organisation> getOrganisations() {
-    return organisations;
+  public Organisation getOrganisation() {
+    return organisation;
   }
 
   /**
-   * Sets the organisations that the user has access to.
-   * @param organisations The organisations that the user has access to.
+   * Sets the organisation that the user has access to.
+   * @param organisation The organisations that the user has access to.
    */
-  public void setOrganisations(Set<Organisation> organisations) {
-    this.organisations = organisations;
+  public void setOrganisation(Organisation organisation) {
+    this.organisation = organisation;
   }
 
   public static final class Meta {
     public static final String TABLE_NAME = "user_organisation_assignment";
     public static final String ID_COLUMN_NAME = "user_organisation_assignment_id";
     public static final String USER_ID_COLUMN_NAME = "user_id";
+    public static final String ORGANISATION_ID_COLUMN_NAME = "organisation_id";
 
     private Meta() {}
   }
