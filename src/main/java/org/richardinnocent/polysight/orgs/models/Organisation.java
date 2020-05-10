@@ -2,6 +2,8 @@ package org.richardinnocent.polysight.orgs.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -15,13 +17,17 @@ import org.richardinnocent.polysight.orgs.models.Organisation.Meta;
 @Table(
     name = Meta.TABLE_NAME,
     uniqueConstraints = {
-        @UniqueConstraint(name = "unique_name", columnNames = Meta.NAME_COLUMN_NAME)
+        @UniqueConstraint(
+            name = Meta.UNIQUE_NAME_CONSTRAINT_NAME,
+            columnNames = Meta.NAME_COLUMN_NAME
+        )
     }
 )
 public class Organisation {
 
   @Id
   @Column(name = Meta.ID_COLUMN_NAME, nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
   @Column(
@@ -114,6 +120,10 @@ public class Organisation {
     public static final String DATE_CREATED_COLUMN_NAME = "date_created";
 
     public static final String STATUS_COLUMN_NAME = "status";
+
+    public static final String UNIQUE_NAME_CONSTRAINT_NAME = "unique_name";
+
+    private Meta() {}
   }
 
 }
