@@ -8,7 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import org.joda.time.DateTime;
+import org.richardinnocent.polysight.orgs.models.CameraGroup.Meta;
 
 /**
  * Represents a grouping of cameras within an organisation. The intention here is to allow multiple
@@ -17,7 +19,13 @@ import org.joda.time.DateTime;
  * over the IAM for their users relating to each group.
  */
 @Entity
-@Table(name = CameraGroup.Meta.TABLE_NAME)
+@Table(name = CameraGroup.Meta.TABLE_NAME,
+       uniqueConstraints = {
+           @UniqueConstraint(
+               name = Meta.UNIQUE_GROUP_NAME_BY_ORGANISATION,
+               columnNames = {Meta.NAME_COLUMN_NAME, Meta.ORGANISATION_ID_COLUMN_NAME}
+           )
+       })
 public class CameraGroup {
 
   @Id
@@ -26,7 +34,7 @@ public class CameraGroup {
   private long id;
 
   @ManyToOne
-  @JoinColumn(name = "id", nullable = false)
+  @JoinColumn(name = Meta.ORGANISATION_ID_COLUMN_NAME, nullable = false)
   private Organisation organisation;
 
   @Column(name = Meta.NAME_COLUMN_NAME, nullable = false)
@@ -104,6 +112,9 @@ public class CameraGroup {
     public static final String ID_COLUMN_NAME = "camera_group_id";
     public static final String NAME_COLUMN_NAME = "name";
     public static final String CREATION_TIME_COLUMN_NAME = "creation_time";
+    public static final String ORGANISATION_ID_COLUMN_NAME = "organisation_id";
+
+    public static final String UNIQUE_GROUP_NAME_BY_ORGANISATION = "group_name_by_organisation";
 
     private Meta() {}
   }
