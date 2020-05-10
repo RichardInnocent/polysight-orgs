@@ -3,6 +3,7 @@ package org.richardinnocent.polysight.orgs.models;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.joda.time.DateTime;
@@ -22,6 +23,7 @@ public class CameraGroup {
   private long id;
 
   @ManyToOne
+  @JoinColumn(name = Organisation.Meta.ID_COLUMN_NAME, nullable = false)
   private Organisation organisation;
 
   @Column(name = Meta.NAME_COLUMN_NAME, nullable = false)
@@ -96,14 +98,11 @@ public class CameraGroup {
 
   public static class Meta {
     public static final String TABLE_NAME = "camera_group";
-
     public static final String ID_COLUMN_NAME = "camera_group_id";
-
-    public static final String ORGANISATION_ID_COLUMN_NAME = "organisation_id";
-
     public static final String NAME_COLUMN_NAME = "name";
-
     public static final String DATE_CREATED_COLUMN_NAME = "date_created";
+
+    private Meta() {}
   }
 
 }
